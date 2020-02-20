@@ -799,7 +799,7 @@ class MarionetteRefTestExecutor(RefTestExecutor):
             self.wait_script = f.read() % {"classname": "reftest-wait"}
 
     def setup(self, runner):
-        super(self.__class__, self).setup(runner)
+        super(MarionetteRefTestExecutor, self).setup(runner)
         self.implementation.setup(**self.implementation_kwargs)
 
     def teardown(self):
@@ -809,11 +809,10 @@ class MarionetteRefTestExecutor(RefTestExecutor):
                 handles = self.protocol.marionette.window_handles
                 if handles:
                     self.protocol.marionette.switch_to_window(handles[0])
-            super(self.__class__, self).teardown()
-        except Exception as e:
+            super(RefTestExecutor, self).teardown()
+        except Exception:
             # Ignore errors during teardown
-            self.logger.warning("Exception during reftest teardown:\n%s" %
-                                traceback.format_exc(e))
+            self.logger.warning("Exception during reftest teardown:\n%s" % traceback.format_exc())
 
     def reset(self):
         self.implementation.reset(**self.implementation_kwargs)
