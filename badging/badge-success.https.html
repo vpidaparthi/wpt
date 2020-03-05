@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<title>Badging: Supported values</title>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script>
+
+promise_test(function() {
+  return navigator.setAppBadge()
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "setAppBadge: no parameters");
+
+promise_test(function() {
+  return navigator.setAppBadge()
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "setAppBadge: undefined parameter");
+
+promise_test(function() {
+  return navigator.setAppBadge(1)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Set to 1");
+
+promise_test(function() {
+  return navigator.setAppBadge(10.6)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Non-whole number should round down to nearest integer");
+
+promise_test(function() {
+  return navigator.setAppBadge(Number.MAX_SAFE_INTEGER)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Maximum allowed value (2^53 - 1)");
+
+promise_test(function() {
+  return navigator.setAppBadge(0)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Set to zero means clear the badge.");
+
+promise_test(function() {
+  return navigator.clearAppBadge(0)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Clear the badge.");
+
+promise_test(function() {
+  return navigator.setAppBadge(null)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Non-numeric: null");
+
+promise_test(function() {
+  return navigator.setAppBadge(false)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Non-numeric: false");
+
+promise_test(function() {
+  return navigator.setAppBadge(true)
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Non-numeric: true");
+
+promise_test(function() {
+  return navigator.setAppBadge("3")
+    .then(result => {
+      assert_equals(result, undefined);
+    });
+}, "Non-numeric: '3'");
+
+</script>
