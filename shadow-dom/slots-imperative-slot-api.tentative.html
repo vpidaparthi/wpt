@@ -137,6 +137,21 @@ test(() => {
 }, 'Previously assigned slotable is moved to new slot when it\'s reassigned.');
 
 test(() => {
+ let tTree = createTestTree(test_assign);
+
+  tTree.s1.assign([tTree.c1]);
+  tTree.s2.assign([tTree.c2, tTree.c1]);
+  tTree.s3.assign([tTree.c1, tTree.c3]);
+
+  assert_array_equals(tTree.s1.assignedNodes(), []);
+  assert_array_equals(tTree.s2.assignedNodes(), [tTree.c2]);
+  assert_array_equals(tTree.s3.assignedNodes(), [tTree.c1, tTree.c3]);
+  assert_equals(tTree.c1.assignedSlot, tTree.s3);
+  assert_equals(tTree.c2.assignedSlot, tTree.s2);
+  assert_equals(tTree.c3.assignedSlot, tTree.s3);
+}, 'Order and assignment of nodes are preserved during multiple assignment in a row.');
+
+test(() => {
   let tTree = createTestTree(test_assign);
 
   // tTree.c4 is invalid for tTree.host slot assignment.
@@ -211,6 +226,19 @@ test(() => {
   assert_array_equals(tTree.s4.assignedNodes(), [tTree.c1]);
   assert_equals(tTree.c1.assignedSlot, tTree.s4);
 }, 'Appending slotable to different host, it loses slot assignment. It can be re-assigned within a new host.');
+
+test(() => {
+  let tTree = createTestTree(test_assign);
+  tTree.s1.assign([tTree.c1]);
+  assert_array_equals(tTree.s1.assignedNodes(), [tTree.c1]);
+  n.shadow_root4.insertBefore(tTree.s1, tTree.s4);
+
+  assert_array_equals(tTree.s1.assignedNodes(), []);
+  tTree.s1.assign([]);
+  tTree.shadow_root.insertBefore(n.s1,n.s2);
+
+  assert_array_equals(n.s1.assignedNodes(), []);
+}, 'A node previously assigned a slot should be not be assigned if the slot moved to a new shadow root. The slot should remain empty when moved back.')
 
 test(() => {
   let tTree = createTestTree(test_assign);
